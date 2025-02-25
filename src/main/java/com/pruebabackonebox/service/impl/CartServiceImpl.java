@@ -1,14 +1,12 @@
 package com.pruebabackonebox.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import com.pruebabackonebox.dto.CartDTO;
+import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 import com.pruebabackonebox.model.Cart;
 import com.pruebabackonebox.model.Product;
@@ -29,30 +27,22 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public boolean setProductToCart(String cartId, Integer productId, Integer quantity) {
+  public ProductCartDTO addProductToCart(String cartId, Integer productId, Double quantity) {
     boolean productExists = productService.productExists(productId);
     boolean cartExists = cartRepository.existsById(cartId);
-    if (productExists) {
+    if (productExists && cartExists) {
       // Get product, update amount and refactor to add to the cart
       Product product = productService.getFullProduct(productId);
-      ProductDTO productDTO = new ProductDTO(product.getDescription(), product.getAmount());
+      ProductDTO productDTO = new ProductDTO(product.getDescription(), quantity);
       productService.updateProduct(productId, productDTO);
-      List<Product> products = new ArrayList<>();
+      Cart cart = cartRepository.findById(cartId).get();
+      List<Product> products = cart.getProducts();
       products.add(product);
-      // Get cart and add product to it
-      if (cartExists) {
-        Cart cart = cartRepository.findById(cartId).get();
-        cart.setProducts(products);
-        cartRepository.save(cart);
-        return true;
-      } else {
-        Cart cart = new Cart();
-        cart.setProducts(products);
-        cartRepository.save(cart);
-        return true;
-      }
+      cart.setProducts(products);
+      cartRepository.save(cart);
+      return new ProductCartDTO(productId, product.getAmount());
     } else {
-      return false;
+      return null;
     }
   }
 
@@ -72,15 +62,17 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public List<CartDTO> getCartDetails(String cartId) {
-    boolean cart = cartRepository.existsById(cartId);
-    if (cart != false) {
-      List<CartDTO> products = new ArrayList<>();
-      for (Product product : cartRepository.findById(cartId).get().getProducts()) {
-        CartDTO tempCartDTO = new CartDTO(product.getId(), product.getAmount());
-        products.add(tempCartDTO);
+  public List<ProductCartDTO> getCartDetails(String cartId) {
+    boolean cartExists = cartRepository.existsById(cartId);
+    if (cartExists != false) {
+      Cart cart = cartRepository.findById(cartId).get();
+      List<Product> products = cart.getProducts();
+      List<ProductCartDTO> cartDTOs = new ArrayList<>();
+      for (Product product : products) {
+        ProductCartDTO cartDTO = new ProductCartDTO(product.getId(), product.getAmount());
+        cartDTOs.add(cartDTO);
       };
-      return products;
+      return cartDTOs;
     } else {
       return null;
     }
@@ -88,7 +80,11 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public void clearCart(String cartId) {
-    cartRepository.deleteById(cartId);
+    Cart cart = cartRepository.findById(cartId).orElse(null);
+    if (cart != null) {
+      cart.setProducts(new ArrayList<>());
+      cartRepository.save(cart);
+    }
   }
 
   @Override

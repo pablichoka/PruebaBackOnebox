@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pruebabackonebox.controller.CartController;
 import com.pruebabackonebox.dto.AddProductDTO;
-import com.pruebabackonebox.dto.CartDTO;
+import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.dto.DeleteProductDTO;
 import com.pruebabackonebox.service.CartService;
 
@@ -24,8 +24,8 @@ public class CartControllerImpl implements CartController {
   }
 
   @Override
-  public ResponseEntity<List<CartDTO>> getCart(String id) {
-    List<CartDTO> cart = cartService.getCartDetails(id);
+  public ResponseEntity<List<ProductCartDTO>> getCart(String id) {
+    List<ProductCartDTO> cart = cartService.getCartDetails(id);
     if (cart != null) {
       return ResponseEntity.ok(cart);
     } else {
@@ -39,9 +39,9 @@ public class CartControllerImpl implements CartController {
   }
 
   @Override
-  public ResponseEntity<Response> addProductToCart(String id, AddProductDTO productDTO) {
-    cartService.setProductToCart(id, productDTO.getProductId(), productDTO.getQuantity());
-    return ResponseEntity.ok().build();
+  public ResponseEntity<ProductCartDTO> addProductToCart(String id, AddProductDTO productDTO) {
+    ProductCartDTO productCartDTO = cartService.addProductToCart(id, productDTO.getProductId(), productDTO.getQuantity());
+    return ResponseEntity.ok(productCartDTO);
   }
 
   @Override

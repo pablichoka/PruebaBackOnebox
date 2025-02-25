@@ -1,14 +1,14 @@
 package com.pruebabackonebox.dto;
 
-public class CartDTO {
+public class ProductCartDTO {
 
   private Integer productId;
   private Double quantity;
 
-  public CartDTO() {
+  public ProductCartDTO() {
   }
 
-  public CartDTO(Integer productId, Double quantity) {
+  public ProductCartDTO(Integer productId, Double quantity) {
     this.productId = productId;
     this.quantity = quantity;
   }
@@ -38,9 +38,9 @@ public class CartDTO {
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
-    if (!(obj instanceof CartDTO))
+    if (!(obj instanceof ProductCartDTO))
       return false;
-    CartDTO other = (CartDTO) obj;
+    ProductCartDTO other = (ProductCartDTO) obj;
     return productId == other.productId && quantity == other.quantity;
   }
 

@@ -2,11 +2,11 @@ package com.pruebabackonebox.service;
 
 import java.util.List;
 
-import com.pruebabackonebox.dto.CartDTO;
+import com.pruebabackonebox.dto.ProductCartDTO;
 
 public interface CartService {
 
-  boolean setProductToCart(String cartId, Integer productId, Integer quantity);
+  ProductCartDTO addProductToCart(String cartId, Integer productId, Double quantity);
 
   boolean removeProductFromCart(String cartId, Integer productId);
 
@@ -14,7 +14,7 @@ public interface CartService {
 
   void deleteCart(String cartId);
 
-  List<CartDTO> getCartDetails(String cartId);
+  List<ProductCartDTO> getCartDetails(String cartId);
 
   String createCart();
 

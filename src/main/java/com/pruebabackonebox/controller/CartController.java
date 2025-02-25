@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pruebabackonebox.dto.AddProductDTO;
-import com.pruebabackonebox.dto.CartDTO;
+import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.dto.DeleteProductDTO;
 
 @RestController
@@ -21,7 +21,7 @@ import com.pruebabackonebox.dto.DeleteProductDTO;
 public interface CartController {
 
   @GetMapping("/{id}")
-  ResponseEntity<List<CartDTO>> getCart(@PathVariable String id);
+  ResponseEntity<List<ProductCartDTO>> getCart(@PathVariable String id);
 
   @GetMapping("/all")
   ResponseEntity<String[]> getAllCarts();
@@ -30,7 +30,7 @@ public interface CartController {
   ResponseEntity<String> createCart();
 
   @PostMapping("/add/{id}")
-  ResponseEntity<Response> addProductToCart(@PathVariable String cartId,  @RequestBody AddProductDTO productData);
+  ResponseEntity<ProductCartDTO> addProductToCart(@PathVariable String cartId,  @RequestBody AddProductDTO productData);
   
   @PostMapping("/delete-product/{id}")
   ResponseEntity<Response> deleteProductFromCart(@PathVariable String id, @RequestBody DeleteProductDTO productData);
