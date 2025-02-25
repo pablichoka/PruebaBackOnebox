@@ -1,8 +1,8 @@
 package com.pruebabackonebox.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Iterable<ProductDTO> getAllProducts() {
     Iterable<Product> products = productRepository.findAll();
-    List<ProductDTO> productDTOs = new ArrayList<>();
+    Set<ProductDTO> productDTOs = new HashSet<>();
     for (Product product : products) {
       productDTOs.add(new ProductDTO(product));
     }
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
     if (!productRepository.existsById(id)) {
-      throw new RuntimeException("Product not found with id: " + id);
+      throw new IllegalArgumentException("Product not found with id: " + id);
     }
     Product product = new Product();
     product.setId(id);

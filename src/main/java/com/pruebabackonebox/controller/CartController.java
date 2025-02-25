@@ -1,6 +1,6 @@
 package com.pruebabackonebox.controller;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pruebabackonebox.dto.AddProductDTO;
-import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.dto.DeleteProductDTO;
+import com.pruebabackonebox.dto.ProductCartDTO;
 
 @RestController
 @RequestMapping("/cart")
 public interface CartController {
 
   @GetMapping("/{id}")
-  ResponseEntity<List<ProductCartDTO>> getCart(@PathVariable String id);
+  ResponseEntity<Set<ProductCartDTO>> getCart(@PathVariable String id);
 
   @GetMapping("/all")
   ResponseEntity<String[]> getAllCarts();
@@ -30,8 +30,8 @@ public interface CartController {
   ResponseEntity<String> createCart();
 
   @PostMapping("/add/{id}")
-  ResponseEntity<ProductCartDTO> addProductToCart(@PathVariable String cartId,  @RequestBody AddProductDTO productData);
-  
+  ResponseEntity<ProductCartDTO> addProductToCart(@PathVariable String cartId, @RequestBody AddProductDTO productData);
+
   @PostMapping("/delete-product/{id}")
   ResponseEntity<Response> deleteProductFromCart(@PathVariable String id, @RequestBody DeleteProductDTO productData);
 
@@ -40,5 +40,8 @@ public interface CartController {
 
   @DeleteMapping("/delete/{id}")
   ResponseEntity<Response> deleteCart(@PathVariable String id);
+
+  @GetMapping("/total/{id}")
+  ResponseEntity<Double> getTotalPrice(@PathVariable String id);
 
 }

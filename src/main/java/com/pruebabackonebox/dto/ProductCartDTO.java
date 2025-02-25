@@ -3,14 +3,16 @@ package com.pruebabackonebox.dto;
 public class ProductCartDTO {
 
   private Integer productId;
-  private Double quantity;
+  private Integer quantity;
+  private double amount;
 
   public ProductCartDTO() {
   }
 
-  public ProductCartDTO(Integer productId, Double quantity) {
+  public ProductCartDTO(Integer productId, Integer quantity, double amount) {
     this.productId = productId;
     this.quantity = quantity;
+    this.amount = amount;
   }
 
   public Integer getProductId() {
@@ -21,11 +23,11 @@ public class ProductCartDTO {
     this.productId = productId;
   }
 
-  public Double getQuantity() {
+  public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(Double quantity) {
+  public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 

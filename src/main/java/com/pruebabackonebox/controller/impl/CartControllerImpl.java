@@ -1,6 +1,7 @@
 package com.pruebabackonebox.controller.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class CartControllerImpl implements CartController {
   }
 
   @Override
-  public ResponseEntity<List<ProductCartDTO>> getCart(String id) {
-    List<ProductCartDTO> cart = cartService.getCartDetails(id);
+  public ResponseEntity<Set<ProductCartDTO>> getCart(String id) {
+    Set<ProductCartDTO> cart = cartService.getCartDetails(id);
     if (cart != null) {
       return ResponseEntity.ok(cart);
     } else {
@@ -40,7 +41,11 @@ public class CartControllerImpl implements CartController {
 
   @Override
   public ResponseEntity<ProductCartDTO> addProductToCart(String id, AddProductDTO productDTO) {
-    ProductCartDTO productCartDTO = cartService.addProductToCart(id, productDTO.getProductId(), productDTO.getQuantity());
+    ProductCartDTO productCartDTO = cartService.addProductToCart(id, productDTO.getProductId(),
+        productDTO.getQuantity());
+    if (productCartDTO == null) {
+      return ResponseEntity.notFound().build();
+    }
     return ResponseEntity.ok(productCartDTO);
   }
 
@@ -65,6 +70,15 @@ public class CartControllerImpl implements CartController {
   @Override
   public ResponseEntity<String> createCart() {
     return ResponseEntity.ok(cartService.createCart());
+  }
+
+  @Override
+  public ResponseEntity<Double> getTotalPrice(String id) {
+    Double totalPrice = cartService.getTotalPrice(id);
+    if (totalPrice == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(totalPrice);
   }
 
 }

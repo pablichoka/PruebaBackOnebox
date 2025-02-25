@@ -2,12 +2,12 @@ package com.pruebabackonebox.dto;
 
 public class AddProductDTO {
     private Integer productId;
-    private Double quantity;
+    private Integer quantity;
 
     public AddProductDTO() {
     }
 
-    public AddProductDTO(Integer productId, Double quantity) {
+    public AddProductDTO(Integer productId, Integer quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -20,11 +20,11 @@ public class AddProductDTO {
         this.productId = productId;
     }
 
-    public Double getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
