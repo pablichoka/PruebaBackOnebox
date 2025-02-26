@@ -41,6 +41,14 @@ class CartTests {
       e.printStackTrace();
     }
   }
+
+  private String initializeCart() throws Exception {
+    return mockMvc.perform(get("/cart/add"))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
+  }
   
 
   @Test
@@ -59,7 +67,7 @@ class CartTests {
 
   @Test
   public void testGetCart() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
 
     mockMvc.perform(get("/cart/{id}", cartId))
         .andExpect(status().isOk())
@@ -68,7 +76,7 @@ class CartTests {
 
   @Test
   public void testAddProductToCart() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
     AddProductDTO productDTO = new AddProductDTO(1, 2);
 
     mockMvc.perform(post("/cart/add/{id}", cartId)
@@ -81,7 +89,7 @@ class CartTests {
 
   @Test
   public void testDeleteProductFromCart() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
     AddProductDTO addProductDTO = new AddProductDTO(1, 2);
 
     mockMvc.perform(post("/cart/add/{id}", cartId)
@@ -99,7 +107,7 @@ class CartTests {
 
   @Test
   public void testClearCart() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
 
     mockMvc.perform(delete("/cart/clear/{id}", cartId))
         .andExpect(status().isOk());
@@ -107,7 +115,7 @@ class CartTests {
 
   @Test
   public void testDeleteCart() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
 
     mockMvc.perform(delete("/cart/delete/{id}", cartId))
         .andExpect(status().isOk());
@@ -115,7 +123,7 @@ class CartTests {
 
   @Test
   public void testGetTotalPrice() throws Exception {
-    String cartId = createCart();
+    String cartId = initializeCart();
     AddProductDTO productDTO = new AddProductDTO(1, 2);
 
     mockMvc.perform(post("/cart/add/{id}", cartId)
@@ -126,13 +134,5 @@ class CartTests {
     mockMvc.perform(get("/cart/total/{id}", cartId))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isNumber());
-  }
-
-  private String createCart() throws Exception {
-    return mockMvc.perform(get("/cart/add"))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
   }
 }
