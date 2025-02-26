@@ -82,8 +82,7 @@ public class ProductServiceImpl implements ProductService {
     if (!productRepository.existsById(id)) {
       throw new IllegalArgumentException("Product not found with id: " + id);
     }
-    Product product = new Product();
-    product.setId(id);
+    Product product = productRepository.findById(id).get();
     product.setDescription(productDTO.getDescription());
     product.setAmount(productDTO.getAmount());
     productRepository.save(product);
