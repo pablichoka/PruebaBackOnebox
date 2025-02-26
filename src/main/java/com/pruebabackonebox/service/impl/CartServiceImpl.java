@@ -162,7 +162,7 @@ public class CartServiceImpl implements CartService {
           cartTimers.remove(cartId);
         }
       };
-      ScheduledFuture<?> scheduledFuture = scheduler.schedule(cartExpiryChecker, 20, TimeUnit.SECONDS);
+      ScheduledFuture<?> scheduledFuture = scheduler.schedule(cartExpiryChecker, 10, TimeUnit.MINUTES);
       cartTimers.put(cartId, scheduledFuture);
 
     } catch (Exception e) {
