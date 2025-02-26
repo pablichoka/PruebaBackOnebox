@@ -1,83 +1,83 @@
-# Documentación de Endpoints
+# Endpoint Documentation
 
-## Endpoints de Cart
+## Cart Endpoints
 
-### Crear un carrito
-- **Método:** GET
+### Create a cart
+- **Method:** GET
 - **Endpoint:** `/cart/add`
-- **Descripción:** Crea un nuevo carrito de compras y devuelve el ID del carrito creado.
-- **Uso:** Realiza una solicitud GET a este endpoint para crear un nuevo carrito. El ID del carrito se devuelve en la respuesta.
+- **Description:** Creates a new shopping cart and returns the ID of the created cart.
+- **Usage:** Make a GET request to this endpoint to create a new cart. The cart ID is returned in the response.
 
-### Obtener todos los carritos
-- **Método:** GET
+### Get all carts
+- **Method:** GET
 - **Endpoint:** `/cart/all`
-- **Descripción:** Devuelve una lista de todos los IDs de los carritos existentes.
-- **Uso:** Realiza una solicitud GET a este endpoint para obtener una lista de todos los carritos.
+- **Description:** Returns a list of all existing cart IDs.
+- **Usage:** Make a GET request to this endpoint to get a list of all carts.
 
-### Obtener detalles de un carrito
-- **Método:** GET
+### Get cart details
+- **Method:** GET
 - **Endpoint:** `/cart/{id}`
-- **Descripción:** Devuelve los detalles del carrito especificado por el ID.
-- **Uso:** Realiza una solicitud GET a este endpoint con el ID del carrito para obtener sus detalles.
+- **Description:** Returns the details of the cart specified by the ID.
+- **Usage:** Make a GET request to this endpoint with the cart ID to get its details.
 
-### Añadir producto al carrito
-- **Método:** POST
+### Add product to cart
+- **Method:** POST
 - **Endpoint:** `/cart/add/{id}`
-- **Descripción:** Añade un producto al carrito especificado por el ID.
-- **Uso:** Realiza una solicitud POST a este endpoint con el ID del carrito y un cuerpo JSON que contenga `productId` y `quantity`.
+- **Description:** Adds a product to the cart specified by the ID.
+- **Usage:** Make a POST request to this endpoint with the cart ID and a JSON body containing `productId` and `quantity`.
 
-### Eliminar producto del carrito
-- **Método:** POST
+### Remove product from cart
+- **Method:** POST
 - **Endpoint:** `/cart/delete-product/{id}`
-- **Descripción:** Elimina un producto del carrito especificado por el ID.
-- **Uso:** Realiza una solicitud POST a este endpoint con el ID del carrito y un cuerpo JSON que contenga `productId`.
+- **Description:** Removes a product from the cart specified by the ID.
+- **Usage:** Make a POST request to this endpoint with the cart ID and a JSON body containing `productId`.
 
-### Vaciar carrito
-- **Método:** DELETE
+### Clear cart
+- **Method:** DELETE
 - **Endpoint:** `/cart/clear/{id}`
-- **Descripción:** Vacía el carrito especificado por el ID.
-- **Uso:** Realiza una solicitud DELETE a este endpoint con el ID del carrito para vaciarlo.
+- **Description:** Clears the cart specified by the ID.
+- **Usage:** Make a DELETE request to this endpoint with the cart ID to clear it.
 
-### Eliminar carrito
-- **Método:** DELETE
+### Delete cart
+- **Method:** DELETE
 - **Endpoint:** `/cart/delete/{id}`
-- **Descripción:** Elimina el carrito especificado por el ID.
-- **Uso:** Realiza una solicitud DELETE a este endpoint con el ID del carrito para eliminarlo.
+- **Description:** Deletes the cart specified by the ID.
+- **Usage:** Make a DELETE request to this endpoint with the cart ID to delete it.
 
-### Obtener precio total del carrito
-- **Método:** GET
+### Get total price of cart
+- **Method:** GET
 - **Endpoint:** `/cart/total/{id}`
-- **Descripción:** Devuelve el precio total de los productos en el carrito especificado por el ID.
-- **Uso:** Realiza una solicitud GET a este endpoint con el ID del carrito para obtener el precio total.
+- **Description:** Returns the total price of the products in the cart specified by the ID.
+- **Usage:** Make a GET request to this endpoint with the cart ID to get the total price.
 
-## Endpoints de Product
+## Product Endpoints
 
-### Obtener un producto
-- **Método:** GET
+### Get a product
+- **Method:** GET
 - **Endpoint:** `/product/{id}`
-- **Descripción:** Devuelve la información del producto especificado por el ID.
-- **Uso:** Realiza una solicitud GET a este endpoint con el ID del producto para obtener su información.
+- **Description:** Returns the information of the product specified by the ID.
+- **Usage:** Make a GET request to this endpoint with the product ID to get its information.
 
-### Obtener todos los productos
-- **Método:** GET
+### Get all products
+- **Method:** GET
 - **Endpoint:** `/product/all`
-- **Descripción:** Devuelve una lista de todos los productos.
-- **Uso:** Realiza una solicitud GET a este endpoint para obtener una lista de todos los productos.
+- **Description:** Returns a list of all products.
+- **Usage:** Make a GET request to this endpoint to get a list of all products.
 
-### Añadir un producto
-- **Método:** POST
+### Add a product
+- **Method:** POST
 - **Endpoint:** `/product/add`
-- **Descripción:** Añade un nuevo producto.
-- **Uso:** Realiza una solicitud POST a este endpoint con un cuerpo JSON que contenga `description` y `amount`.
+- **Description:** Adds a new product.
+- **Usage:** Make a POST request to this endpoint with a JSON body containing `description` and `amount`.
 
-### Eliminar un producto
-- **Método:** DELETE
+### Delete a product
+- **Method:** DELETE
 - **Endpoint:** `/product/delete`
-- **Descripción:** Elimina el producto especificado por el ID.
-- **Uso:** Realiza una solicitud DELETE a este endpoint con el ID del producto como parámetro.
+- **Description:** Deletes the product specified by the ID.
+- **Usage:** Make a DELETE request to this endpoint with the product ID as a parameter.
 
-### Actualizar un producto
-- **Método:** PUT
+### Update a product
+- **Method:** PUT
 - **Endpoint:** `/product/update/{id}`
-- **Descripción:** Actualiza la información del producto especificado por el ID.
-- **Uso:** Realiza una solicitud PUT a este endpoint con el ID del producto y un cuerpo JSON que contenga `description` y `amount`.
+- **Description:** Updates the information of the product specified by the ID.
+- **Usage:** Make a PUT request to this endpoint with the product ID and a JSON body containing `description` and `amount`.
