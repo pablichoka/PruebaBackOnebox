@@ -43,4 +43,9 @@ public class ProductControllerImpl implements ProductController {
   public ResponseEntity<Iterable<ProductDTO>> getAllProducts() {
     return ResponseEntity.ok(productService.getAllProducts());
   }
+
+  @Override
+  public ResponseEntity<ProductDTO> updateProduct(Integer id, ProductDTO product) {
+    return ResponseEntity.ok(productService.updateProduct(id, product));
+  }
 }
