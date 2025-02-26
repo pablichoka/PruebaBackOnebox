@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.model.Cart;
@@ -35,6 +36,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public ProductCartDTO addProductToCart(String cartId, Integer productId, Integer quantity) {
     if (!productService.productExists(productId) || !cartRepository.existsById(cartId)) {
       return null;
@@ -65,6 +67,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public boolean removeProductFromCart(String cartId, Integer productId) {
     Cart cart = cartRepository.findById(cartId).orElse(null);
     if (cart != null) {
@@ -102,6 +105,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public void clearCart(String cartId) {
     Cart cart = cartRepository.findById(cartId).orElse(null);
     if (cart != null) {
@@ -122,11 +126,13 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public void deleteCart(String cartId) {
     cartRepository.deleteById(cartId);
   }
 
   @Override
+  @Transactional
   public String createCart() {
     Cart cart = new Cart();
     cartRepository.save(cart);
@@ -149,6 +155,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public void startTimer(String cartId) {
     Cart cart = cartRepository.findById(cartId).orElse(null);
     if (cart == null) {
