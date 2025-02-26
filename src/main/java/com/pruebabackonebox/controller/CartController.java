@@ -16,7 +16,10 @@ import com.pruebabackonebox.dto.AddProductDTO;
 import com.pruebabackonebox.dto.DeleteProductDTO;
 import com.pruebabackonebox.dto.ProductCartDTO;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 @RestController
+@Hidden
 @RequestMapping("/cart")
 public interface CartController {
 
