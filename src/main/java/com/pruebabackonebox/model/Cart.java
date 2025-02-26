@@ -1,5 +1,6 @@
 package com.pruebabackonebox.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -28,4 +29,11 @@ public class Cart {
 
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<CartProduct> cartProducts;
+
+  @Column(name = "last_updated")
+  private LocalDateTime lastUpdated;
+
+  public void updateTimestamp() {
+    this.lastUpdated = LocalDateTime.now();
+  }
 }

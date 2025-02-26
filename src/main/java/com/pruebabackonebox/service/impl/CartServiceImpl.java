@@ -2,6 +2,11 @@ package com.pruebabackonebox.service.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +25,8 @@ public class CartServiceImpl implements CartService {
 
   private final CartRepository cartRepository;
   private final ProductService productService;
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+  private final ConcurrentHashMap<String, ScheduledFuture<?>> cartTimers = new ConcurrentHashMap<>();
 
   @Autowired
   public CartServiceImpl(CartRepository cartRepository, ProductService productService) {
@@ -50,7 +57,9 @@ public class CartServiceImpl implements CartService {
     cartProduct.setQuantity(quantity);
     products.add(cartProduct);
     cart.setCartProducts(products);
+    cart.updateTimestamp();
     cartRepository.save(cart);
+    resetTimer(cartId);
 
     return new ProductCartDTO(productId, cartProduct.getQuantity(), product.getAmount());
   }
@@ -63,7 +72,9 @@ public class CartServiceImpl implements CartService {
       CartProductId cartProductId = new CartProductId(cart.getId(), productId);
       products.removeIf(product -> product.getId().equals(cartProductId));
       cart.setCartProducts(products);
+      cart.updateTimestamp();
       cartRepository.save(cart);
+      resetTimer(cartId);
       return true;
     } else {
       return false;
@@ -119,6 +130,7 @@ public class CartServiceImpl implements CartService {
   public String createCart() {
     Cart cart = new Cart();
     cartRepository.save(cart);
+    startTimer(cart.getId());
     return cart.getId();
   }
 
@@ -134,6 +146,41 @@ public class CartServiceImpl implements CartService {
       totalAmount += cartProduct.getQuantity() * product.getAmount();
     }
     return totalAmount;
+  }
+
+  @Override
+  public void startTimer(String cartId) {
+    Cart cart = cartRepository.findById(cartId).orElse(null);
+    if (cart == null) {
+      throw new IllegalArgumentException("Cart not found");
+    }
+    try {
+      Runnable cartExpiryChecker = new Runnable() {
+        @Override
+        public void run() {
+          cartRepository.deleteById(cartId);
+          cartTimers.remove(cartId);
+        }
+      };
+      ScheduledFuture<?> scheduledFuture = scheduler.schedule(cartExpiryChecker, 20, TimeUnit.SECONDS);
+      cartTimers.put(cartId, scheduledFuture);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void resetTimer(String cartId) {
+    try {
+      ScheduledFuture<?> scheduledFuture = cartTimers.get(cartId);
+      if (scheduledFuture != null) {
+        scheduledFuture.cancel(true);
+      }
+      startTimer(cartId);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

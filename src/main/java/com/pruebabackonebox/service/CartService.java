@@ -20,5 +20,9 @@ public interface CartService {
 
   String[] getAllCarts();
 
-  Double getTotalPrice(String id);
+  Double getTotalPrice(String cartId);
+
+  void startTimer(String cartId);
+
+  void resetTimer(String cartId);
 }
