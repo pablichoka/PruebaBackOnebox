@@ -2,7 +2,6 @@ package com.pruebabackonebox.repository;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.ArrayList;
 
 import org.springframework.stereotype.Component;
 
@@ -18,11 +17,6 @@ public class ProductRepository {
       products.removeIf(p -> p.getId().equals(product.getId()));
     }
     products.add(product);
-    return product;
-  }
-
-  public Iterable<Product> saveAll(Iterable<Product> product) {
-    product.forEach(this::save);
     return product;
   }
 
@@ -42,16 +36,6 @@ public class ProductRepository {
     return new HashSet<>(products);
   }
 
-  public Iterable<Product> findAllById(Iterable<Integer> ids) {
-    ArrayList<Product> result = new ArrayList<>();
-    ids.forEach(id -> findById(id).ifPresent(result::add));
-    return result;
-  }
-
-  public long count() {
-    return products.size();
-  }
-
   public boolean existsById(Integer id) {
     return products.stream().anyMatch(p -> p.getId().equals(id));
   }
@@ -62,13 +46,5 @@ public class ProductRepository {
 
   public void delete(Product entity) {
     products.remove(entity);
-  }
-
-  public void deleteAll(Iterable<? extends Product> entities) {
-    entities.forEach(this::delete);
-  }
-
-  public void deleteAll() {
-    products.clear();
   }
 }
