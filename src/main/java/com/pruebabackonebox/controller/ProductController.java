@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pruebabackonebox.dto.CreateProductDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +32,7 @@ public interface ProductController {
 
   @PostMapping("/add")
   @ResponseBody
-  public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO product);
+  public ResponseEntity<ProductDTO> addProduct(@RequestBody CreateProductDTO product);
 
   @DeleteMapping("/delete")
   @ResponseBody

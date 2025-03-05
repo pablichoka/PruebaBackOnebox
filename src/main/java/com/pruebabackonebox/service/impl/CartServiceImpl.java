@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.pruebabackonebox.dto.ProductCartDTO;
 import com.pruebabackonebox.model.Cart;
@@ -36,7 +35,6 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  @Transactional
   public ProductCartDTO addProductToCart(String cartId, Integer productId, Integer quantity) {
     if (!productService.productExists(productId) || !cartRepository.existsById(cartId)) {
       return null;
@@ -47,7 +45,11 @@ public class CartServiceImpl implements CartService {
     }
 
     Product product = productService.getFullProduct(productId);
-    Cart cart = cartRepository.findById(cartId).orElse(null);
+    Cart cart = cartRepository.findById(cartId);
+
+    if(cart == null){
+      return null;
+    }
 
     CartProductId cartProductId = new CartProductId(cart.getId(), product.getId());
     Set<CartProduct> products = cart.getCartProducts();
@@ -67,9 +69,8 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  @Transactional
   public boolean removeProductFromCart(String cartId, Integer productId) {
-    Cart cart = cartRepository.findById(cartId).orElse(null);
+    Cart cart = cartRepository.findById(cartId);
     if (cart != null) {
       Set<CartProduct> products = cart.getCartProducts();
       CartProductId cartProductId = new CartProductId(cart.getId(), productId);
@@ -89,15 +90,14 @@ public class CartServiceImpl implements CartService {
   public Set<ProductCartDTO> getCartDetails(String cartId) {
     boolean cartExists = cartRepository.existsById(cartId);
     if (cartExists != false) {
-      Cart cart = cartRepository.findById(cartId).get();
+      Cart cart = cartRepository.findById(cartId);
       Set<CartProduct> products = cart.getCartProducts();
       Set<ProductCartDTO> cartDTOs = new HashSet<>();
       for (CartProduct cartProduct : products) {
         Product product = productService.getFullProduct(cartProduct.getProduct().getId());
         ProductCartDTO cartDTO = new ProductCartDTO(product.getId(), cartProduct.getQuantity(), product.getAmount());
         cartDTOs.add(cartDTO);
-      }
-      ;
+      };
       return cartDTOs;
     } else {
       return null;
@@ -105,12 +105,10 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  @Transactional
   public void clearCart(String cartId) {
-    Cart cart = cartRepository.findById(cartId).orElse(null);
-    if (cart != null) {
-      cart.getCartProducts().clear();
-      cartRepository.save(cart);
+    Cart cart = cartRepository.findById(cartId);
+    if(cart != null){
+      cartRepository.clear(cart);
     }
   }
 
@@ -126,13 +124,11 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  @Transactional
   public void deleteCart(String cartId) {
     cartRepository.deleteById(cartId);
   }
 
   @Override
-  @Transactional
   public String createCart() {
     Cart cart = new Cart();
     cartRepository.save(cart);
@@ -142,7 +138,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Double getTotalPrice(String id) {
-    Cart cart = cartRepository.findById(id).orElse(null);
+    Cart cart = cartRepository.findById(id);
     if (cart == null)
       return null;
     Set<CartProduct> products = cart.getCartProducts();
@@ -155,9 +151,8 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  @Transactional
   public void startTimer(String cartId) {
-    Cart cart = cartRepository.findById(cartId).orElse(null);
+    Cart cart = cartRepository.findById(cartId);
     if (cart == null) {
       throw new IllegalArgumentException("Cart not found");
     }
@@ -169,7 +164,7 @@ public class CartServiceImpl implements CartService {
           cartTimers.remove(cartId);
         }
       };
-      ScheduledFuture<?> scheduledFuture = scheduler.schedule(cartExpiryChecker, 10, TimeUnit.MINUTES);
+      ScheduledFuture<?> scheduledFuture = scheduler.schedule(cartExpiryChecker, 25, TimeUnit.SECONDS);
       cartTimers.put(cartId, scheduledFuture);
 
     } catch (Exception e) {

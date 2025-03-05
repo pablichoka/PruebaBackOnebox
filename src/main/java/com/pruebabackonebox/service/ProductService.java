@@ -1,5 +1,6 @@
 package com.pruebabackonebox.service;
 
+import com.pruebabackonebox.dto.CreateProductDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 import com.pruebabackonebox.model.Product;
 
@@ -13,7 +14,7 @@ public interface ProductService {
 
   boolean productExists(Integer id);
 
-  ProductDTO addProduct(ProductDTO product);
+  ProductDTO addProduct(CreateProductDTO product);
 
   ProductDTO updateProduct(Integer id, ProductDTO productDTO);
 
