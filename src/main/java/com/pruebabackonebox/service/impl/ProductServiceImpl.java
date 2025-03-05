@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.pruebabackonebox.dto.CreateProductDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 import com.pruebabackonebox.model.Product;
 import com.pruebabackonebox.repository.ProductRepository;
@@ -22,6 +22,8 @@ public class ProductServiceImpl implements ProductService {
   public ProductServiceImpl(ProductRepository productRepository) {
     this.productRepository = productRepository;
   }
+
+  Integer id = 0;
 
   @Override
   public Product getFullProduct(Integer id) {
@@ -44,12 +46,12 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  @Transactional
-  public ProductDTO addProduct(ProductDTO productDTO) {
+  public ProductDTO addProduct(CreateProductDTO productDTO) {
     if (productDTO == null) {
       throw new IllegalArgumentException("ProductDTO cannot be null");
     }
     Product product = new Product();
+    product.setId(id++);
     product.setDescription(productDTO.getDescription());
     product.setAmount(productDTO.getAmount());
     productRepository.save(product);
@@ -57,7 +59,6 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  @Transactional
   public void deleteProduct(Integer id) {
     if (!productRepository.existsById(id)) {
       throw new IllegalArgumentException("Product not found with id: " + id);
@@ -81,7 +82,6 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  @Transactional
   public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
     if (!productRepository.existsById(id)) {
       throw new IllegalArgumentException("Product not found with id: " + id);

@@ -90,14 +90,14 @@ class CartTests {
   @Test
   public void testDeleteProductFromCart() throws Exception {
     String cartId = initializeCart();
-    AddProductDTO addProductDTO = new AddProductDTO(1, 2);
+    AddProductDTO addProductDTO = new AddProductDTO(0, 2);
 
     mockMvc.perform(post("/cart/add/{id}", cartId)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(addProductDTO)))
         .andExpect(status().isOk());
 
-    DeleteProductDTO deleteProductDTO = new DeleteProductDTO(1);
+    DeleteProductDTO deleteProductDTO = new DeleteProductDTO(0);
 
     mockMvc.perform(post("/cart/delete-product/{id}", cartId)
         .contentType(MediaType.APPLICATION_JSON)

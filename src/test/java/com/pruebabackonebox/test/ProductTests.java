@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pruebabackonebox.dto.ProductDTO;
+import com.pruebabackonebox.dto.CreateProductDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +33,7 @@ class ProductTests {
 
 	@BeforeEach
 	public void addInitialProduct() throws Exception {
-		ProductDTO product = new ProductDTO("Producto 1", 3.0);
+		CreateProductDTO product = new CreateProductDTO("Producto 1", 3.0);
 
 		mockMvc.perform(post("/product/add")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +45,7 @@ class ProductTests {
 
 	@Test
 	public void testAddProduct() throws Exception {
-		ProductDTO product = new ProductDTO("Producto 2", 2.0);
+		CreateProductDTO product = new CreateProductDTO("Producto 2", 2.0);
 
 		mockMvc.perform(post("/product/add")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -57,10 +57,10 @@ class ProductTests {
 
 	@Test
 	public void testGetProduct() throws Exception {
-		mockMvc.perform(get("/product/{id}", 1))
+		mockMvc.perform(get("/product/{id}", 0))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.description").value("Producto 2"))
-				.andExpect(jsonPath("$.amount").value(2.0));
+				.andExpect(jsonPath("$.description").value("Producto 1"))
+				.andExpect(jsonPath("$.amount").value(3.0));
 	}
 
 	@Test
@@ -79,7 +79,7 @@ class ProductTests {
 
 	@Test
 	public void testUpdateProduct() throws Exception {
-		ProductDTO product = new ProductDTO("Producto 1 Modificado", 4.0);
+		CreateProductDTO product = new CreateProductDTO("Producto 1 Modificado", 4.0);
 
 		mockMvc.perform(put("/product/update/{id}", 1)				
 				.contentType(MediaType.APPLICATION_JSON)

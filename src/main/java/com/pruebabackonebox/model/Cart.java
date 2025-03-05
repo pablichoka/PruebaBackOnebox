@@ -1,39 +1,43 @@
 package com.pruebabackonebox.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "cart")
 public class Cart {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "id")
   private String id;
-
-  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<CartProduct> cartProducts;
-
-  @Column(name = "last_updated")
   private LocalDateTime lastUpdated;
+
+  public Cart() {
+    this.id = UUID.randomUUID().toString();
+    this.cartProducts = new HashSet<>();
+    this.lastUpdated = LocalDateTime.now();
+  }
 
   public void updateTimestamp() {
     this.lastUpdated = LocalDateTime.now();
   }
+
+  @Override
+  public int hashCode() {
+    return java.util.Objects.hash(id, lastUpdated);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Cart other = (Cart) obj;
+    return java.util.Objects.equals(id, other.id) &&
+           java.util.Objects.equals(cartProducts, other.cartProducts) &&
+           java.util.Objects.equals(lastUpdated, other.lastUpdated);
+  }
+
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
+    private Integer id; 
     private String description;
     private Double amount;
 
@@ -23,6 +24,7 @@ public class ProductDTO {
       if (product.getAmount() <= 0) {
           throw new IllegalArgumentException("Product amount must be a positive value");
       }
+      this.id = product.getId();
       this.description = product.getDescription();
       this.amount = product.getAmount();
   }
