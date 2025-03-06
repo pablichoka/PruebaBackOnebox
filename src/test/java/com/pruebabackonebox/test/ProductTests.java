@@ -9,10 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +23,7 @@ import com.pruebabackonebox.dto.CreateProductDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 class ProductTests {
 
 	private final MockMvc mockMvc;
@@ -44,6 +48,14 @@ class ProductTests {
 	}
 
 	@Test
+	public void testGetProduct() throws Exception {
+		mockMvc.perform(get("/product/{id}", 0))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.description").value("Producto 1"))
+				.andExpect(jsonPath("$.amount").value(3.0));
+	}
+
+	@Test
 	public void testAddProduct() throws Exception {
 		CreateProductDTO product = new CreateProductDTO("Producto 2", 2.0);
 
@@ -55,13 +67,6 @@ class ProductTests {
 				.andExpect(jsonPath("$.amount").value(2.0));
 	}
 
-	@Test
-	public void testGetProduct() throws Exception {
-		mockMvc.perform(get("/product/{id}", 0))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.description").value("Producto 1"))
-				.andExpect(jsonPath("$.amount").value(3.0));
-	}
 
 	@Test
 	public void testGetAllProducts() throws Exception {
@@ -73,7 +78,7 @@ class ProductTests {
 	@Test
 	public void testDeleteProduct() throws Exception {
 		mockMvc.perform(delete("/product/delete")
-				.param("id", "2"))
+				.param("id", "0"))
 				.andExpect(status().isOk());
 	}
 
@@ -81,7 +86,7 @@ class ProductTests {
 	public void testUpdateProduct() throws Exception {
 		CreateProductDTO product = new CreateProductDTO("Producto 1 Modificado", 4.0);
 
-		mockMvc.perform(put("/product/update/{id}", 1)				
+		mockMvc.perform(put("/product/update/{id}", 0)				
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(product)))
 				.andExpect(status().isOk())
