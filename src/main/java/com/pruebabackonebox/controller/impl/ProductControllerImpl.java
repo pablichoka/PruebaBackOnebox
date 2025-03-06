@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.pruebabackonebox.controller.ProductController;
+import com.pruebabackonebox.dto.AddProductDTO;
 import com.pruebabackonebox.dto.CreateProductDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 import com.pruebabackonebox.service.ProductService;
@@ -46,7 +47,7 @@ public class ProductControllerImpl implements ProductController {
   }
 
   @Override
-  public ResponseEntity<ProductDTO> updateProduct(Integer id, ProductDTO product) {
+  public ResponseEntity<ProductDTO> updateProduct(Integer id, CreateProductDTO product) {
     return ResponseEntity.ok(productService.updateProduct(id, product));
   }
 }

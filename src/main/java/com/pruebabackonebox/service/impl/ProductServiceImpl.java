@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ProductDTO updateProduct(Integer id, ProductDTO productDTO) {
+  public ProductDTO updateProduct(Integer id, CreateProductDTO productDTO) {
     if (!productRepository.existsById(id)) {
       throw new IllegalArgumentException("Product not found with id: " + id);
     }
