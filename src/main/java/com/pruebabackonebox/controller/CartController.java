@@ -29,7 +29,7 @@ public interface CartController {
   @GetMapping("/all")
   ResponseEntity<String[]> getAllCarts();
 
-  @GetMapping("/add")
+  @GetMapping("/create")
   ResponseEntity<String> createCart();
 
   @PostMapping("/add/{id}")
