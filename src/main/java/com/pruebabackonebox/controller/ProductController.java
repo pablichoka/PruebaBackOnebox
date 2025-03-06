@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pruebabackonebox.dto.AddProductDTO;
 import com.pruebabackonebox.dto.CreateProductDTO;
 import com.pruebabackonebox.dto.ProductDTO;
 
@@ -40,6 +41,6 @@ public interface ProductController {
 
   @PutMapping("/update/{id}")
   @ResponseBody
-  public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO product);
+  public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody CreateProductDTO product);
 
 }
